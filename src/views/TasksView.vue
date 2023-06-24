@@ -9,7 +9,7 @@
           <button class="accept" @click="editTitle(i)">Accept</button>
           <button class="decline" @click="showEditInput(i)">Decline</button>
         </div>
-        <button class="edit" v-show="!task.edited" @click="showEditInput(i)">Edit</button>
+        <button class="edit" v-show="!task.edited" @click="showEditInput(i, task)">Edit</button>
         <button class="delete" @click="removeItem(i)">Delete</button>
       </li>
     </ul>
@@ -22,7 +22,6 @@ import AddTaskForm from '@/components/AddTaskForm.vue'
 export default {
   data() {
     return {
-      isShowEditInput: false,
       newTitle: ''
     }
   },
@@ -30,16 +29,13 @@ export default {
   computed: {
     ...mapGetters(['allTasks']),
     getTasks() {
-      // if (localStorage.tasks) {
-      //   return JSON.parse(localStorage.getItem('tasks'))
-      // } else {
         return this.allTasks
       }
-    // }
   },
   methods: {
     ...mapMutations(['removeTask', 'changeEdit', 'changeTitle']),
-    showEditInput(i) {
+    showEditInput(i, t) {
+      this.newTitle = t?.title
       this.changeEdit(i)
     },
     removeItem(i) {

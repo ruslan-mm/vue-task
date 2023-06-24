@@ -10,3 +10,7 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+store.subscribe((mutation, state) => {
+  localStorage.setItem('tasks', JSON.stringify(state.tasks));
+})

@@ -5,12 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    tasks: [
-      { edited: false, title: 'Первая задача' },
-      { edited: false, title: 'Вторая задача' },
-      { edited: false, title: 'Третья задача' },
-    ],
-  },
+    tasks: localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [
+    { id: 1, edited: false, title: 'Первая задача' },
+    { id: 2, edited: false, title: 'Вторая задача' },
+    { id: 3, edited: false, title: 'Третья задача' },
+  ],
+},
   getters: {
     allTasks(state) {
       return state.tasks
@@ -22,16 +22,14 @@ export default new Vuex.Store({
     },
     addTask(state, newTask) {
       state.tasks.push(newTask)
-      let qwe = localStorage.getItem('tasks')
-      // qwe.push(new)
-      console.log(qwe);
-      localStorage.setItem('tasks', JSON.stringify(newTask))
     },
     changeEdit(state, i) {
       state.tasks[i].edited = !state.tasks[i].edited
     },
     changeTitle(state, { i, newTitle }) {
-      state.tasks[i].title = newTitle
+      if (newTitle) {
+        state.tasks[i].title = newTitle
+      }
     }
   },
 })
