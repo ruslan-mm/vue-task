@@ -2,15 +2,15 @@
   <div class="container">
     <AddTaskForm />
     <ul>
-      <li v-for="(task, i) in allTasks" :key="i">
+      <li v-for="(task, i) in getTasks" :key="i">
         <span v-show="!task.edited">{{ task.title }}</span>
         <div v-show="task.edited" class="edit__block">
           <input v-model="newTitle" type="text">
-          <button @click="editTitle(i)">accept</button>
-          <button @click="showEditInput(i)">decline</button>
+          <button class="accept" @click="editTitle(i)">Accept</button>
+          <button class="decline" @click="showEditInput(i)">Decline</button>
         </div>
-        <button v-show="!task.edited" @click="showEditInput(i)">edit</button>
-        <button @click="removeItem(i)">del</button>
+        <button class="edit" v-show="!task.edited" @click="showEditInput(i)">Edit</button>
+        <button class="delete" @click="removeItem(i)">Delete</button>
       </li>
     </ul>
   </div>
@@ -27,7 +27,16 @@ export default {
     }
   },
   components: { AddTaskForm },
-  computed: mapGetters(['allTasks']),
+  computed: {
+    ...mapGetters(['allTasks']),
+    getTasks() {
+      // if (localStorage.tasks) {
+      //   return JSON.parse(localStorage.getItem('tasks'))
+      // } else {
+        return this.allTasks
+      }
+    // }
+  },
   methods: {
     ...mapMutations(['removeTask', 'changeEdit', 'changeTitle']),
     showEditInput(i) {
@@ -37,18 +46,56 @@ export default {
       this.removeTask(i)
     },
     editTitle(i) {
-      this.changeTitle(i, {
-        title: this.newTitle,
-        edited: false
-      })
+      this.changeTitle({ i, newTitle: this.newTitle })
       this.showEditInput(i)
+      this.newTitle = ''
     }
-  }
+  },
 }
 </script>
 
-<style>
-  .edit__block {
-    display: inline;
-  }
+<style scoped>
+input {
+  padding: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+/* .container {
+  display: flex;
+  flex-direction: column;
+} */
+.edit__block {
+  display: inline;
+}
+
+li {
+  padding: 10px;
+}
+
+li span {
+  padding: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+button {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.edit {
+  background-color: #d9e75f;
+}
+
+.delete {
+  background-color: #f52727;
+}
+.accept {
+  background-color: #2de73d;
+}
+.decline {
+  background-color: #e75f5f;
+
+}
 </style>

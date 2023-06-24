@@ -17,24 +17,34 @@ export default {
     methods: {
         ...mapMutations(['addTask']),
         submit() {
-            this.addTask({title: this.title, edited: false})
-            this.title = ''
+            if (this.title) {
+                this.addTask({ title: this.title, edited: false })
+                this.title = ''
+            }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin: 10px auto;
     width: 20%;
 }
+
 input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     margin-bottom: 10px;
+}
+
+button {
+    background-color: #07b178;
+    padding: 15px;
+    border-radius: 10px;
 }
 </style>
